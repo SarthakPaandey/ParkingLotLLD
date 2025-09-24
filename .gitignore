@@ -1,0 +1,11 @@
+# Compiled classes
+/bin/
+/bin/**
+**/bin/**
+*.class
+
+# OS files
+.DS_Store
+
+# Logs
+*.log
