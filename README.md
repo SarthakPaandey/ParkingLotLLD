@@ -151,23 +151,3 @@ classDiagram
 
 
 
-### Enum definitions
-
-```java
-public enum SpotType {
-    SMALL,
-    MEDIUM,
-    LARGE,
-    ELECTRIC
-}
-```
-
-```java
-public enum VehicleType {
-    CAR,
-    BIKE,
-    ELECTRIC_BIKE,
-    BUS
-}
-```
-
