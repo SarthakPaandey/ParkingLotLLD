@@ -21,6 +21,13 @@ public class ParkingSpot {
     public boolean isOccupied() { return occupied; }
     public void setOccupied(boolean occupied) { this.occupied = occupied; }
 
+    public boolean canFit(Vehicle vehicle) {
+        return vehicle != null && vehicle.canParkOn(this.spotType);
+    }
+
+    public void occupy() { this.occupied = true; }
+    public void free() { this.occupied = false; }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -32,6 +39,16 @@ public class ParkingSpot {
     @Override
     public int hashCode() {
         return Objects.hash(spotId);
+    }
+
+    @Override
+    public String toString() {
+        return "ParkingSpot{" +
+                "spotId='" + spotId + '\'' +
+                ", spotType=" + spotType +
+                ", position=" + position +
+                ", occupied=" + occupied +
+                '}';
     }
 }
 

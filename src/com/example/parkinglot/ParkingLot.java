@@ -29,7 +29,7 @@ public class ParkingLot {
     public Ticket park(String entryGateId, Vehicle vehicle) {
         ParkingSpot spot = getSlot(entryGateId, vehicle.getVehicleType());
         if (spot == null) return null;
-        spot.setOccupied(true);
+        spot.occupy();
         allocationIndex.onSpotOccupied(spot);
         Ticket ticket = new Ticket(UUID.randomUUID().toString(), vehicle, spot, getGateById(entryGateId), Instant.now());
         activeTicketsBySpotId.put(spot.getSpotId(), ticket);
@@ -41,7 +41,7 @@ public class ParkingLot {
         if (t == null) return 0.0;
         double fee = pricingStrategy.calculateFee(t, Instant.now());
         ParkingSpot spot = t.getSpot();
-        spot.setOccupied(false);
+        spot.free();
         allocationIndex.onSpotFreed(spot);
         return fee;
     }
@@ -50,6 +50,28 @@ public class ParkingLot {
         for (Gate g : entryGates) if (g.getGateId().equals(id)) return g;
         for (Gate g : exitGates) if (g.getGateId().equals(id)) return g;
         return null;
+    }
+
+    public ParkingSpot getSpotById(String spotId) { return spotIdToSpot.get(spotId); }
+
+    public void addSpot(ParkingSpot spot) {
+        spotIdToSpot.put(spot.getSpotId(), spot);
+        allocationIndex.addSpot(spot);
+    }
+
+    public void removeSpot(String spotId) {
+        allocationIndex.removeSpot(spotId);
+        spotIdToSpot.remove(spotId);
+    }
+
+    public Collection<Ticket> getActiveTickets() {
+        return Collections.unmodifiableCollection(activeTicketsBySpotId.values());
+    }
+
+    public Set<String> getEntryGateIds() {
+        Set<String> ids = new HashSet<>();
+        for (Gate g : entryGates) ids.add(g.getGateId());
+        return ids;
     }
 }
 

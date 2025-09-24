@@ -19,6 +19,29 @@ public final class Distance implements Comparable<Distance> {
         }
         return this.spotId.compareTo(other.spotId);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Distance other = (Distance) obj;
+        return manhattanDistance == other.manhattanDistance && spotId.equals(other.spotId);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Integer.hashCode(manhattanDistance);
+        result = 31 * result + spotId.hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Distance{" +
+                "manhattanDistance=" + manhattanDistance +
+                ", spotId='" + spotId + '\'' +
+                '}';
+    }
 }
 
 

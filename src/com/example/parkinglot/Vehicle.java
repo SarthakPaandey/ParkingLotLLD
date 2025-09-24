@@ -16,6 +16,18 @@ public class Vehicle {
     public VehicleType getVehicleType() {
         return vehicleType;
     }
+
+    public boolean canParkOn(SpotType spotType) {
+        return CompatibilityRules.canPark(this.vehicleType, spotType);
+    }
+
+    @Override
+    public String toString() {
+        return "Vehicle{" +
+                "registrationNumber='" + registrationNumber + '\'' +
+                ", vehicleType=" + vehicleType +
+                '}';
+    }
 }
 
 

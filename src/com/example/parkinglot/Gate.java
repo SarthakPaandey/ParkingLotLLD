@@ -11,6 +11,18 @@ public class Gate {
 
     public String getGateId() { return gateId; }
     public Position getPosition() { return position; }
+
+    public int distanceTo(Position pos, int floorWeight) {
+        return this.position.manhattanTo(pos, floorWeight);
+    }
+
+    @Override
+    public String toString() {
+        return "Gate{" +
+                "gateId='" + gateId + '\'' +
+                ", position=" + position +
+                '}';
+    }
 }
 
 

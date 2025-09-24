@@ -36,6 +36,23 @@ public class PricingStrategy {
         }
         return cost;
     }
+
+    public double previewFee(SpotType spotType, VehicleType vehicleType, long minutes) {
+        double hours = Math.ceil(Math.max(1, minutes) / 60.0);
+        double base;
+        switch (spotType) {
+            case SMALL: base = basePerHourSmall; break;
+            case MEDIUM: base = basePerHourMedium; break;
+            case LARGE: base = basePerHourLarge; break;
+            case ELECTRIC: base = basePerHourElectric; break;
+            default: base = basePerHourMedium;
+        }
+        double cost = hours * base;
+        if (spotType == SpotType.ELECTRIC && (vehicleType == VehicleType.ELECTRIC_BIKE || vehicleType == VehicleType.CAR)) {
+            cost += hours * electricSurchargePerHour;
+        }
+        return cost;
+    }
 }
 
 

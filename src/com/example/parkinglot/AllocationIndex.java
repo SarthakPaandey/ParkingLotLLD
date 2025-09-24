@@ -18,11 +18,10 @@ public class AllocationIndex {
         recomputeAll();
     }
 
+    private static final int FLOOR_WEIGHT = 1000;
+
     private int manhattan(Position a, Position b) {
-        int df = Math.abs(a.getFloor() - b.getFloor());
-        int dr = Math.abs(a.getRow() - b.getRow());
-        int dc = Math.abs(a.getCol() - b.getCol());
-        return df * 1000 + dr + dc;
+        return a.manhattanTo(b, FLOOR_WEIGHT);
     }
 
     private void recomputeAll() {
@@ -66,6 +65,31 @@ public class AllocationIndex {
             }
         }
         return null;
+    }
+
+    public void addSpot(ParkingSpot spot) {
+        spotIdToSpot.put(spot.getSpotId(), spot);
+        for (Map.Entry<String, NavigableSet<Distance>> e : gateToDistanceSet.entrySet()) {
+            Gate gate = gatesById.get(e.getKey());
+            if (!spot.isOccupied()) {
+                int d = manhattan(gate.getPosition(), spot.getPosition());
+                e.getValue().add(new Distance(d, spot.getSpotId()));
+            }
+        }
+    }
+
+    public void removeSpot(String spotId) {
+        ParkingSpot spot = spotIdToSpot.remove(spotId);
+        if (spot == null) return;
+        for (Map.Entry<String, NavigableSet<Distance>> e : gateToDistanceSet.entrySet()) {
+            Gate gate = gatesById.get(e.getKey());
+            int d = manhattan(gate.getPosition(), spot.getPosition());
+            e.getValue().remove(new Distance(d, spot.getSpotId()));
+        }
+    }
+
+    public Set<String> getGateIds() {
+        return Collections.unmodifiableSet(gateToDistanceSet.keySet());
     }
 }
 

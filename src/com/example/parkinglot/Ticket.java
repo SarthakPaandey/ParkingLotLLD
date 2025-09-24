@@ -22,6 +22,21 @@ public class Ticket {
     public ParkingSpot getSpot() { return spot; }
     public Gate getEntryGate() { return entryGate; }
     public Instant getEntryTime() { return entryTime; }
+
+    public long parkedMinutesUntil(Instant exitTime) {
+        return Math.max(0, java.time.Duration.between(entryTime, exitTime).toMinutes());
+    }
+
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                "ticketId='" + ticketId + '\'' +
+                ", vehicle=" + vehicle +
+                ", spot=" + spot +
+                ", entryGate=" + entryGate +
+                ", entryTime=" + entryTime +
+                '}';
+    }
 }
 
 
